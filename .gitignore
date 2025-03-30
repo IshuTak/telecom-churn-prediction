@@ -1,0 +1,37 @@
+# Virtual Environment
+venv/
+*.env
+.venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Large data files
+*.csv
+!data/WA_Fn-UseC_-Telco-Customer-Churn.csv
+
+# Model files
+*.pkl
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Output and visualization files
+outputs/
+visualizations/
+reports/
+models/
