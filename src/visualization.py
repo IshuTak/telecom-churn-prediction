@@ -10,39 +10,29 @@ from typing import Optional
 
 class CustomerInsightVisualizer:
     def __init__(self, segmented_customers: pd.DataFrame):
-        """
-        Initialize visualizer with segmented customer data
         
-        Args:
-            segmented_customers (pd.DataFrame): Segmented customer data
-        """
         self.logger = logging.getLogger(__name__)
         
-        # Ensure Customer_Segment is present
+        
         if 'Customer_Segment' not in segmented_customers.columns:
             segmented_customers['Customer_Segment'] = 0
         
         self.data = segmented_customers
     
     def segment_distribution_plot(self, save_path: str = 'visualizations/segment_distribution.png'):
-        """
-        Create segment distribution plot
-        
-        Args:
-            save_path (str): Path to save the plot
-        """
+       
         try:
             plt.figure(figsize=(12, 6))
             segment_counts = self.data['Customer_Segment'].value_counts()
             
-            # Create bar plot with percentage
+            
             ax = segment_counts.plot(kind='bar')
             plt.title('Customer Segment Distribution', fontsize=15)
             plt.xlabel('Customer Segment', fontsize=12)
             plt.ylabel('Number of Customers', fontsize=12)
             plt.tight_layout()
             
-            # Add percentage labels
+            
             total = len(self.data)
             for i, v in enumerate(segment_counts):
                 percentage = v / total * 100
@@ -56,12 +46,7 @@ class CustomerInsightVisualizer:
             self.logger.error(f"Error creating segment distribution plot: {e}")
     
     def segment_churn_analysis(self, save_path: str = 'visualizations/segment_churn_analysis.png'):
-        """
-        Create churn rate visualization by customer segment
         
-        Args:
-            save_path (str): Path to save the plot
-        """
         try:
             plt.figure(figsize=(12, 6))
             churn_by_segment = self.data.groupby('Customer_Segment')['Churn'].mean()
@@ -84,12 +69,7 @@ class CustomerInsightVisualizer:
             self.logger.error(f"Error creating segment churn analysis plot: {e}")
     
     def service_usage_heatmap(self, save_path: str = 'visualizations/service_usage_heatmap.png'):
-        """
-        Create heatmap of service usage across segments
         
-        Args:
-            save_path (str): Path to save the plot
-        """
         try:
             # Select service columns
             service_columns = [
@@ -98,7 +78,7 @@ class CustomerInsightVisualizer:
                 'TechSupport', 'StreamingTV', 'StreamingMovies'
             ]
             
-            # Calculate service usage by segment
+            
             service_usage = self.data.groupby('Customer_Segment')[service_columns].mean()
             
             plt.figure(figsize=(15, 8))
@@ -112,14 +92,9 @@ class CustomerInsightVisualizer:
             self.logger.error(f"Error creating service usage heatmap: {e}")
     
     def interactive_segment_analysis(self, save_path: str = 'visualizations/interactive_segments.html'):
-        """
-        Create interactive scatter plot of customer segments
         
-        Args:
-            save_path (str): Path to save the interactive plot
-        """
         try:
-            # Create interactive plot using Plotly
+           
             fig = px.scatter(
                 self.data, 
                 x='tenure', 
@@ -135,26 +110,21 @@ class CustomerInsightVisualizer:
                 }
             )
             
-            # Customize layout
+            
             fig.update_layout(
                 xaxis_title='Customer Tenure (Months)',
                 yaxis_title='Monthly Charges',
                 legend_title='Customer Segment'
             )
             
-            # Save interactive HTML
+            
             fig.write_html(save_path)
             self.logger.info(f"Interactive segment analysis saved to {save_path}")
         except Exception as e:
             self.logger.error(f"Error creating interactive segment analysis: {e}")
     
     def churn_factors_correlation(self, save_path: str = 'visualizations/churn_correlation.png'):
-        """
-        Create correlation heatmap of churn-related features
         
-        Args:
-            save_path (str): Path to save the plot
-        """
         try:
             # Select relevant features
             churn_features = [
@@ -169,7 +139,7 @@ class CustomerInsightVisualizer:
             plt.figure(figsize=(12, 10))
             correlation_matrix = self.data[churn_features].corr()
             
-            # Create heatmap
+            
             sns.heatmap(
                 correlation_matrix, 
                 annot=True, 
@@ -189,9 +159,7 @@ class CustomerInsightVisualizer:
             self.logger.error(f"Error creating churn factors correlation plot: {e}")
     
     def generate_comprehensive_visualizations(self):
-        """
-        Generate all visualizations
-        """
+        
         try:
             # Ensure visualizations directory exists
             os.makedirs('visualizations', exist_ok=True)
@@ -209,27 +177,17 @@ class CustomerInsightVisualizer:
 
 class ChurnVisualization:
     def __init__(self, churn_data: pd.DataFrame):
-        """
-        Initialize churn visualizer
         
-        Args:
-            churn_data (pd.DataFrame): Churn-related data
-        """
         self.logger = logging.getLogger(__name__)
         self.data = churn_data
     
     def churn_risk_distribution(self, save_path: str = 'visualizations/churn_risk_distribution.png'):
-        """
-        Visualize churn distribution
         
-        Args:
-            save_path (str): Path to save the plot
-        """
         try:
             plt.figure(figsize=(10, 6))
             churn_counts = self.data['Churn'].value_counts()
             
-            # Pie chart with percentage
+            
             plt.pie(
                 churn_counts, 
                 labels=['Retained', 'Churned'], 
@@ -246,12 +204,7 @@ class ChurnVisualization:
             self.logger.error(f"Error creating churn distribution plot: {e}")
     
     def contract_churn_analysis(self, save_path: str = 'visualizations/contract_churn_analysis.png'):
-        """
-        Analyze churn rate by contract type
         
-        Args:
-            save_path (str): Path to save the plot
-        """
         try:
             plt.figure(figsize=(12, 6))
             churn_by_contract = self.data.groupby('Contract')['Churn'].mean()
@@ -262,7 +215,7 @@ class ChurnVisualization:
             plt.ylabel('Churn Rate', fontsize=12)
             plt.tight_layout()
             
-            # Add percentage labels
+            
             for i, v in enumerate(churn_by_contract):
                 ax.text(i, v, f'{v*100:.1f}%', 
                         ha='center', va='bottom')
